@@ -1,0 +1,25 @@
+<nav class="navbar navbar-expand navbar-dark bg-dark mb-4">
+  <div class="container">
+    <a class="navbar-brand" routerLink="/">Каталог товарів</a>
+
+    <div class="navbar-nav me-auto">
+      <a class="nav-link" routerLink="/">Товари</a>
+      <a class="nav-link" routerLink="/import" *ngIf="authService.isAdmin$ | async">Імпорт</a>
+      <a class="nav-link" routerLink="/products/new" *ngIf="authService.isAdmin$ | async">Додати товар</a>
+    </div>
+
+    <div class="navbar-nav">
+      <ng-container *ngIf="authService.currentUser$ | async as user; else loginLink">
+        <span class="navbar-text text-light me-3">{{ user.email }}</span>
+        <button class="btn btn-outline-light btn-sm" type="button" (click)="logout()">Вийти</button>
+      </ng-container>
+      <ng-template #loginLink>
+        <a class="btn btn-outline-light btn-sm" routerLink="/login">Увійти</a>
+      </ng-template>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <router-outlet></router-outlet>
+</div>

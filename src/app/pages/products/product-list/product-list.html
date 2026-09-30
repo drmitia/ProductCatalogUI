@@ -1,0 +1,49 @@
+<h2 class="mb-4">Товари</h2>
+
+<div class="text-center py-5" *ngIf="loading()">Завантаження...</div>
+
+<div class="row" *ngIf="!loading()">
+  <div class="col-12 col-md-6 mb-4" *ngFor="let product of result()?.items">
+    <div class="card h-100">
+      <img
+        [src]="product.imageUrl || 'https://via.placeholder.com/640x480?text=No+image'"
+        class="card-img-top"
+        [alt]="product.name"
+        style="object-fit: cover; height: 240px;">
+
+      <div class="card-body d-flex flex-column">
+        <h5 class="card-title">{{ product.name }}</h5>
+        <p class="card-text text-muted flex-grow-1">
+          {{ isExpanded(product.id) ? product.description : (product.description | slice:0:150) }}{{ !isExpanded(product.id) && product.description.length > 150 ? '…' : '' }}
+        </p>
+
+        <button
+          *ngIf="product.description.length > 150"
+          class="btn btn-link btn-sm p-0 mb-2 align-self-start"
+          type="button"
+          (click)="toggleExpanded(product.id)">
+          {{ isExpanded(product.id) ? 'Показати менше' : 'Показати більше' }}
+        </button>
+
+        <div class="d-flex gap-2" *ngIf="authService.isAdmin$ | async">
+          <a class="btn btn-outline-primary btn-sm" [routerLink]="['/products', product.id, 'edit']">Редагувати</a>
+          <button class="btn btn-outline-danger btn-sm" type="button" (click)="deleteProduct(product.id)">Видалити</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<nav *ngIf="!loading() && totalPages() > 1">
+  <ul class="pagination justify-content-center">
+    <li class="page-item" [class.disabled]="page() === 1">
+      <button class="page-link" type="button" (click)="goToPage(page() - 1)">«</button>
+    </li>
+    <li class="page-item" *ngFor="let p of pageNumbers()" [class.active]="page() === p">
+      <button class="page-link" type="button" (click)="goToPage(p)">{{ p }}</button>
+    </li>
+    <li class="page-item" [class.disabled]="page() === totalPages()">
+      <button class="page-link" type="button" (click)="goToPage(page() + 1)">»</button>
+    </li>
+  </ul>
+</nav>

@@ -1,0 +1,21 @@
+<h2 class="mb-4">{{ isEditMode ? 'Редагування товару' : 'Новий товар' }}</h2>
+
+<div class="alert alert-danger" *ngIf="errorMessage()">{{ errorMessage() }}</div>
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()" *ngIf="!loading()">
+  <div class="mb-3">
+    <label class="form-label">Назва</label>
+    <input type="text" class="form-control" formControlName="name">
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Опис</label>
+    <textarea class="form-control" rows="5" formControlName="description"></textarea>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">URL зображення</label>
+    <input type="text" class="form-control" formControlName="imageUrl">
+  </div>
+
+  <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Зберегти</button>
+  <a routerLink="/" class="btn btn-link">Скасувати</a>
+</form>

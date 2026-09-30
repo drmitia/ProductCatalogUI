@@ -1,0 +1,21 @@
+<h2 class="mb-4">Імпорт товарів</h2>
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="mb-3">
+    <label class="form-label">Посилання на сторінку категорії</label>
+    <input type="text" class="form-control" formControlName="url" placeholder="https://prom.ua/ua/Noutbuki">
+  </div>
+
+  <button type="submit" class="btn btn-primary" [disabled]="form.invalid || loading()">
+    {{ loading() ? 'Парсимо...' : 'Спарсити' }}
+  </button>
+</form>
+
+<div class="alert alert-danger mt-3" *ngIf="errorMessage()">{{ errorMessage() }}</div>
+
+<div class="alert alert-success mt-3" *ngIf="result()">
+  Знайдено посилань: {{ result()!.totalLinksFound }}<br>
+  Додано: {{ result()!.added }}<br>
+  Пропущено (дублі): {{ result()!.skippedDuplicates }}<br>
+  Пропущено (невдалі): {{ result()!.skippedInvalid }}
+</div>
